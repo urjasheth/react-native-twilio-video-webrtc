@@ -175,6 +175,7 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
      */
     private static PatchedVideoView thumbnailVideoView;
     private static LocalVideoTrack localVideoTrack;
+    private boolean isLocalVideoPublished = false;
 
     private static CameraCapturer cameraCapturer;
     private LocalAudioTrack localAudioTrack;
@@ -313,7 +314,7 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
                 /*
                  * If connected to a Room then share the local video track.
                  */
-                if (localParticipant != null) {
+                if (localParticipant != null && isLocalVideoPublished) {
                     localParticipant.publishTrack(localVideoTrack);
                 }
             }
@@ -610,6 +611,7 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
 
     public void publishLocalVideo(boolean enabled) {
         if (localParticipant != null && localVideoTrack != null) {
+            isLocalVideoPublished = enabled;
             if (enabled) {
                 localParticipant.publishTrack(localVideoTrack);
             } else {
